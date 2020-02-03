@@ -47,7 +47,7 @@
         Cart
       </v-btn>
     </v-app-bar>
-    <div class="">
+    <div class="mt-11">
       <nuxt />
       <vue-snackbar></vue-snackbar>
     </div>
