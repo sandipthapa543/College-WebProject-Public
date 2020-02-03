@@ -25,11 +25,14 @@ export default {
   ** Global CSS
   */
   css: [
+    '~/assets/app.scss'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/axios.js',
+    '~/plugins/common.js',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -40,8 +43,33 @@ export default {
   /*
   ** Nuxt.js modules
   */
+  // Plugins and installed modules
+
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/users/login/', method: 'post', propertyName: 'token' },
+          user: { url: '/users/me/', method: 'get', propertyName: false },
+          logout: false
+        },
+        tokenType: 'Bearer'
+      }
+    },
+    redirect: {
+      login: '/account/login/',
+      logout: '/account/login/',
+      callback: '/account/login',
+      home: '/'
+    },
+    rewriteRedirects: false,
+    fullPathRedirect: false,
+    localStorage: false
+  },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -49,7 +77,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,

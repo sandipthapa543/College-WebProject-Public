@@ -1,117 +1,94 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+  <v-app light>
     <v-app-bar
-      :clipped-left="clipped"
-      fixed
+      color="red darken-4 lighten-1"
+      dark
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
+      <div>Ecresson</div>
+      <v-spacer></v-spacer>
+      <v-text-field
+        class="mt-8"
+        label="Search"
+        solo
+        flat
+        rounded
+        light
+        append-icon="mdi-search"
+      ></v-text-field>
+      <v-spacer></v-spacer>
+      <v-btn v-if="!$auth.loggedIn"  text class="text-capitalize">Login</v-btn>
+      <v-btn v-if="!$auth.loggedIn" text class="text-capitalize">Sign Up</v-btn>
+      <v-menu
+        v-if="$auth.loggedIn"
+        bottom
+        nudge-bottom="42"
       >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
+        <template
+          v-slot:activator="{on}"
+        >
+          <div
+            v-on="on"
+          >
+            {{ $auth.user.first_Name }}
+          </div>
+        </template>
+        <v-list>
+          <v-list-item @click="logout">
+            <v-list-item-icon><v-icon>mdi-lock</v-icon></v-list-item-icon>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-btn text class="text-capitalize">
+        <v-icon
+          v-text="'mdi-cart'"
+        ></v-icon>
+        Cart
       </v-btn>
     </v-app-bar>
-    <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-content>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer
-      :fixed="fixed"
-      app
-    >
-      <span>&copy; 2019</span>
+    <div class="">
+      <nuxt />
+      <vue-snackbar></vue-snackbar>
+    </div>
+    <v-footer class="grey darken-3">
+      <span>&copy; 2019 eCresson</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+  import VueSnackbar from "../components/LayoutUtils/VueSnackbar";
+  export default {
+    components: {VueSnackbar},
+    data () {
+      return {
+        clipped: false,
+        drawer: false,
+        fixed: false,
+        items: [
+          {
+            icon: 'mdi-apps',
+            title: 'Welcome',
+            to: '/'
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: 'Inspire',
+            to: '/inspire'
+          }
+        ],
+        miniVariant: false,
+        right: true,
+        rightDrawer: false,
+        title: 'Vuetify.js'
+      }
+    },
+    methods: {
+      logout () {
+        this.$auth.logout();
+        this.setNotifyMessage("Successfully Logout.")
+      }
     }
   }
-}
 </script>

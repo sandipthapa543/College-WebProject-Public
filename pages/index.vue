@@ -1,92 +1,102 @@
 <template>
-  <v-layout
-    column
-    justify-center
-    align-center
-  >
-    <v-flex
-      xs12
-      sm8
-      md6
-    >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
+  <v-row>
+    <v-col class="mt-12">
+      <v-carousel
+        cycle
+        hide-delimiter-background
+        show-arrows-on-hover
+      >
+        <v-carousel-item
+          v-for=" i in 3"
+          :key="i"
+        >
+          <v-img src="/product.jpg" contain  class=""></v-img>
+        </v-carousel-item>
+      </v-carousel>
+
+    </v-col>
+    <v-col md="12" :class="'px-4 pt-0'">
+      <product-list
+        :product-list="productList"
+        title="Popular Products"
+      ></product-list>
+    </v-col>
+    <v-col cols="12" class="px-4 blue-grey lighten-5">
+      <product-list
+        :product-list="productList"
+        title="Discount Products"
+      ></product-list>
+    </v-col>
+    <v-col cols="12" class="text-center px-7">
+      <v-row align="center" justify="center">
+        <v-col cols="12" class="text-center font-weight-bold title">Who are we ?</v-col>
+        <v-row align="center" justify="center">
+          <v-col md="3" sm="12" v-for="index in 3" :key="index">
+            <v-card
+              flat
+              class="grey lighten-5"
             >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+              <v-col class="text-center">
+                <v-icon v-text="'mdi-account'" size="80"></v-icon>
+              </v-col>
+              <v-card-text>
+                <div class="body-2 font-weight-bold">Most Authentic Paper product.</div>
+                <div>We are good at this.</div>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-row>
+    </v-col>
+    <v-col cols="12" class="px-4 blue-grey lighten-5" >
+      <customer-review></customer-review>
+    </v-col>
+    <v-col></v-col>
+  </v-row>
 </template>
-
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+  import Logo from '~/components/Logo.vue'
+  import ProductList from "../components/Product/ProductList";
+  import CustomerReview from '../components/HomePage/CustomerReview'
+  import VuetifyLogo from '~/components/VuetifyLogo.vue'
 
-export default {
-  components: {
-    Logo,
-    VuetifyLogo
+  export default {
+    components: {
+      Logo,
+      VuetifyLogo,
+      ProductList,
+      CustomerReview
+    },
+    data () {
+      return {
+        productList: [
+          {
+            name: 'Gift box',
+            price: 'Nrs 3000',
+            image: '/image/product1.jpg',
+            description: 'This is good paper product.'
+          },
+          {
+            name: 'Envelope',
+            price: 'Nrs 4000',
+            image: '/image/product2.jpg',
+            description: 'This is good paper product.'
+          },
+          {
+            name: 'Gift box',
+            price: 'Nrs 3000',
+            image: '/image/product1.jpg',
+            description: 'This is good paper product.'
+          },
+          {
+            name: 'Envelope',
+            price: 'Nrs 4000',
+            image: '/image/product2.jpg',
+            description: 'This is good paper product.'
+          }
+
+        ]
+      }
+    }
   }
-}
 </script>
