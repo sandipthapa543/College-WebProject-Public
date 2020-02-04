@@ -20,11 +20,14 @@
           ></v-text-field>
         </v-col>
         <v-col cols="6">
-          <v-text-field
+          <v-select
             v-model="formValues.brand"
             label="Brand"
+            :items="brandChoices"
+            item-text="brandName"
+            item-value="_id"
             prepend-inner-icon="mdi-file"
-          ></v-text-field>
+          ></v-select>
         </v-col>
         <v-col cols="6">
           <v-text-field
@@ -34,11 +37,12 @@
           ></v-text-field>
         </v-col>
         <v-col cols="6">
-          <v-text-field
+          <v-select
             v-model="formValues.status"
             label="Status"
+            :items="statusChoices"
             prepend-inner-icon="mdi-file"
-          ></v-text-field>
+          ></v-select>
         </v-col>
         <v-col cols="6">
           <v-text-field
@@ -86,28 +90,39 @@
       return {
         brand: {},
         statusChoices: ['Published', 'Unpublished'],
+        brandChoices: [],
         formValues: {
 
         }
       }
+    },
+    created() {
+      this.getBrand()
     },
     methods: {
       createProduct () {
         let formData = new FormData()
         formData.append('productName', this.formValues.productName)
         formData.append('productCategory', this.formValues.productCategory)
-        formData.append('brand', this.formValues.brand)
+        formData.append('brandId', this.formValues.brand)
         formData.append('productDescription', this.formValues.description)
-        formData.append('stock', this.formValues.stock)
-        formData.append('status', this.formValues.status)
+        formData.append('productStock', this.formValues.stock)
+        formData.append('productStatus', this.formValues.status)
         formData.append('productImage', this.formValues.image)
-        this.$axios.$post(`products/add`, formData)
+        formData.append('productPrice', this.formValues.price)
+        this.$axios.$post(`product`, formData)
         .then(() => {
           this.setNotifyMessage('Successfully Created Product.')
           this.$emit('close')
         })
         .catch(() => {
           this.setNotifyMessage('Something went wrong.', 'red')
+        })
+      },
+      getBrand () {
+        this.$axios.$get('brand')
+        .then((response)=> {
+          this.brandChoices = response.result
         })
       }
     }
