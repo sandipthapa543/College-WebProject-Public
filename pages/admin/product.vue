@@ -19,17 +19,17 @@
           slot-scope="props"
         >
           <tr>
-            <td>{{ props.item.name }}</td>
-            <td>{{ props.item.category }}</td>
-            <td>{{ props.item.brand }}</td>
-            <td>{{ props.item.stock }}</td>
-            <td>{{ props.item.status }}</td>
+            <td>{{ props.item.productName }}</td>
+            <td>{{ props.item.productDescription }}</td>
+            <td>{{ props.item.brand || 'N/A' }}</td>
+            <td>{{ props.item.productStock }}</td>
+            <td>{{ props.item.productStatus }}</td>
           </tr>
         </template>
       </v-data-table>
     </v-card>
-    <v-dialog v-model="productForm" width="960">
-      <product-form v-if="productForm"></product-form>
+    <v-dialog v-model="productForm" width="960" persistent>
+      <product-form v-if="productForm" @close="productForm = false"></product-form>
     </v-dialog>
   </v-container>
 </template>
@@ -45,6 +45,7 @@ export default {
           name: 'Mirror', category: 'Something', brand: 'Ferrai', stock: 4, status: 'Published'
         }
       ],
+      brandChoices: [],
       headers: [
         { text: 'Name', value: 'productName', sortable: false },
         { text: 'Category', value: 'productName', sortable: false },
@@ -53,6 +54,17 @@ export default {
         { text: 'Status', value: 'productName', sortable: false }
       ]
     }
-  }
+    },
+  created() {
+    this.getAllProduct()
+  },
+  methods: {
+      getAllProduct() {
+        this.$axios.$get('product')
+          .then((response) => {
+            this.productList = response.result
+          })
+      }
+    }
 }
 </script>
