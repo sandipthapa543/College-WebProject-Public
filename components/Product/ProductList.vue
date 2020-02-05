@@ -25,19 +25,26 @@
                 <v-img
                   class="white--text align-end"
                   height="200px"
-                  :src="item.image"
+                  :src="$options.BASE_URL + `/${item.productImage[0]}`"
                 >
+                  <v-row>
+                    <v-col>
+                      <v-btn icon @click="addToCart(item)">
+                        <v-icon v-text="'mdi-cart'"></v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
                 </v-img>
 
                 <v-card-text class="text--primary">
                   <div class="body-2">
-                    {{ item.name }}
+                    {{ item.productName }}
                     <span>
-                          ({{item.description.substring(0, 18) + '...'}})
+                          ({{item.productDescription.substring(0, 18) + '...'}})
                         </span>
                   </div>
 
-                  <div class="font-weight-bold body-1">{{ item.price }}</div>
+                  <div class="font-weight-bold body-1">{{ item.productPrice }}</div>
                   <v-rating
                     small
                     :value="3"
@@ -53,8 +60,57 @@
   </v-container>
 </template>
 <script>
+  import { mapMutations } from 'vuex'
   export default {
-    props: ['productList', 'title']
+    props: ['title'],
+    data () {
+      return {
+        productList: []
+      }
+    },
+    created() {
+     this.getProducts()
+    },
+    methods: {
+      ...mapMutations({
+        setCart: 'setCartDetails'
+      }),
+      getProducts ()  {
+        this.$axios.$get('product')
+        .then((response)=> {
+          this.productList = response.result
+        })
+      },
+      addToCart (detail) {
+        if(this.$auth.loggedIn) {
+          let dataToPost = {
+            product: detail._id,
+            user: this.$auth.user._id,
+            status: 'Cart'
+          }
+          this.$axios.$post('cart', dataToPost)
+            .then(()=> {
+              this.setNotifyMessage("Successfully added product.")
+              this.setCartDetails()
+            })
+            .catch(()=> {
+              this.setNotifyMessage("Something went wrong.")
+            })
+        } else {
+          this.setNotifyMessage("Please Login first to add product.")
+          this.$router.push('/account/login')
+        }
+
+
+      },
+      setCartDetails () {
+        this.$axios.$get(`cart?userId=${this.$auth.user._id}`)
+        .then((response) => {
+          this.setCart(response.result)
+        })
+      }
+    }
+
 
 
   }
