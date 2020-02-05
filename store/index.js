@@ -9,7 +9,8 @@ export const state = ()  => ({
     color: 'red',
     message: 'Error',
     display: false
-  }
+  },
+  cartDetails: []
 })
 
 
@@ -19,6 +20,9 @@ export const  getters = {
   },
   getNotifyError (state) {
     return  state.notify
+  },
+  getCartDetails (state) {
+    return state.cartDetails
   }
 }
 
@@ -29,5 +33,8 @@ export const mutations = {
       color: color,
       message: payload
     }
+  },
+  setCartDetails (state, payload) {
+    state.cartDetails = [...payload]
   }
 }
