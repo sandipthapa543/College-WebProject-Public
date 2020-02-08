@@ -1,8 +1,9 @@
 <template>
   <v-app light>
     <v-app-bar
-      color="red darken-4 lighten-1"
+      color="blue  lighten-1"
       dark
+      flat
       app
     >
       <div>Ecresson</div>
@@ -33,7 +34,7 @@
             {{ $auth.user.first_Name }}
           </div>
         </template>
-        <v-list>
+        <v-list dense>
           <v-list-item @click="logout">
             <v-list-item-icon><v-icon>mdi-lock</v-icon></v-list-item-icon>
             <v-list-item-title>Logout</v-list-item-title>
@@ -49,10 +50,11 @@
         >
             <v-badge
               color="green"
+              class="mr-2"
               :content="cartDetails.length"
             >
             <div
-              class="mx-3"
+              class="mx-2"
               v-on="on"
             >
               <v-icon
@@ -66,12 +68,31 @@
             <v-card-title>
               Your Whishlist
             </v-card-title>
-            <v-card-text>
+            <v-card-text style="height: 385px">
               <v-row v-if="cartDetails && cartDetails.length">
+                <v-col  class="py-0">
+                  <v-row align="center" justify="center">
+                    <v-col cols="6">
+                      Product Name
+                    </v-col>
+                    <v-col>
+                      Quantity
+                    </v-col>
+                    <v-col>
+                      Price
+                    </v-col>
+                    <v-col>
+                      Actions
+                    </v-col>
+                  </v-row>
+                </v-col>
                 <v-col
-                  v-for="(product, index) in cartDetails" :key="index"
+                  v-for="(product, index) in cartDetails.slice(0, 2)" :key="index"
+                  cols="12"
                 >
-                  {{ product }}
+                <cart-item
+                  :product-id="product.product"
+                ></cart-item>
                 </v-col>
               </v-row>
               <v-row v-else>
@@ -79,16 +100,23 @@
                   No any Product added.
                 </v-col>
               </v-row>
+              <v-row>
+                  <v-col class="text-right py-0">
+                    <v-btn text color="red darken-2" class="text-capitalize">Go To Cart</v-btn>
+                    <v-btn depressed color="orange" class="white--text text-capitalize">
+                      Checkout
+                    </v-btn>
+                  </v-col>
+              </v-row>
             </v-card-text>
           </v-card>
 
       </v-menu>
     </v-app-bar>
-    <div class="mt-11">
+    <div class="mt-8">
       <nuxt />
       <vue-snackbar></vue-snackbar>
     </div>
-    {{ cartDetails }}
     <v-footer class="grey darken-3">
       <span>&copy; 2019 eCresson</span>
     </v-footer>
@@ -98,8 +126,9 @@
 <script>
   import VueSnackbar from "../components/LayoutUtils/VueSnackbar";
   import { mapGetters, mapMutations } from "vuex"
+  import CartItem from "../components/HomePage/CartItem";
   export default {
-    components: {VueSnackbar},
+    components: {CartItem, VueSnackbar},
     data () {
       return {
         clipped: false,
@@ -144,7 +173,13 @@
       fetchCart () {
         this.$axios.$get(`cart?userId=${this.$auth.user._id}`)
           .then((response) => {
-            this.setCartDetails(response.result || [])
+            let cartDetails = [ ...new Set(response.map((x) =>{
+            return {
+              product: x.product,
+              cart: x.cart
+            }
+            } ))]
+            this.setCartDetails(cartDetails || [])
           })
       }
     }
