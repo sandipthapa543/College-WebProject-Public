@@ -2,12 +2,9 @@
   <v-container>
     <v-row>
       <v-col cols="12" class="pt-0">
-        <v-row justify="center" align="center">
+        <v-row align="center">
           <v-col md="6">
             <div class="font-weight-bold title">{{ title }}</div>
-          </v-col>
-          <v-col cols="6" class="text-right">
-            <v-btn class="white--text text-capitalize" color="light-green lighten-1">View all</v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -25,28 +22,44 @@
                 <v-img
                   class="white--text align-end"
                   height="200px"
-                  :src="$options.BASE_URL + `/${item.productImage[0]}`"
+                  :src="'http://localhost:9000/static/' + `${item.productImage}`"
                 >
-                  <v-row>
-                    <v-col>
-                      <v-btn icon @click="addToCart(item)">
-                        <v-icon v-text="'mdi-cart'"></v-icon>
-                      </v-btn>
+                  <v-row v-if="hover">
+                    <v-col class="text-right mx-2">
+
                     </v-col>
                   </v-row>
                 </v-img>
 
-                <v-card-text class="text--primary">
-                  <div class="body-2">
-                    {{ item.productName }}
-                    <span>
+                <v-card-text class="py-0 text--primary">
+                  <v-row align="center">
+                    <v-col class="py-0" cols="9">
+                      <div class="body-2">
+                        {{ item.productName }}
+                        <span>
                           ({{item.productDescription.substring(0, 18) + '...'}})
                         </span>
-                  </div>
+                      </div>
+                    </v-col>
+                    <v-col class="py-0">
+                      <v-tooltip bottom>
+                        <template
+                          v-slot:activator="{on}"
+                        >
+                          <v-btn v-on="on" icon @click="addToCart(item)">
+                            <v-icon v-text="'mdi-cart'"></v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Add to Cart</span>
+                      </v-tooltip>
+                    </v-col>
+                  </v-row>
+
 
                   <div class="font-weight-bold body-1">{{ item.productPrice }}</div>
                   <v-rating
                     small
+                    dense
                     :value="3"
                   >
                   </v-rating>
@@ -88,7 +101,7 @@
             user: this.$auth.user._id,
             status: 'Cart'
           }
-          this.$axios.$post('cart', dataToPost)
+          this.$axios.$post('cart/addto', dataToPost)
             .then(()=> {
               this.setNotifyMessage("Successfully added product.")
               this.setCartDetails()
@@ -106,7 +119,7 @@
       setCartDetails () {
         this.$axios.$get(`cart?userId=${this.$auth.user._id}`)
         .then((response) => {
-          this.setCart(response.result)
+          this.setCart(response)
         })
       }
     }

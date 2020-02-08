@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col class="mt-12">
+    <v-col>
       <v-carousel
         cycle
         hide-delimiter-background
@@ -10,23 +10,24 @@
           v-for=" i in 3"
           :key="i"
         >
-          <v-img src="/product.jpg" contain  class=""></v-img>
+          <v-img src="banner.jpg" aspect-ratio="1.7" contain  class=""></v-img>
         </v-carousel-item>
       </v-carousel>
 
     </v-col>
-    <v-col md="12" :class="'px-4 pt-0'">
+    <v-col cols="12" class="px-4">
+      <brand-list
+        :product-list="productList"
+        title="All Brands"
+      ></brand-list>
+    </v-col>
+    <v-col md="12" :class="'px-4 blue-grey lighten-5 pt-0'">
       <product-list
         :product-list="productList"
         title="Popular Products"
       ></product-list>
     </v-col>
-    <v-col cols="12" class="px-4 blue-grey lighten-5">
-      <product-list
-        :product-list="productList"
-        title="Discount Products"
-      ></product-list>
-    </v-col>
+
     <v-col cols="12" class="text-center px-7">
       <v-row align="center" justify="center">
         <v-col cols="12" class="text-center font-weight-bold title">Who are we ?</v-col>
@@ -48,10 +49,6 @@
         </v-row>
       </v-row>
     </v-col>
-    <v-col cols="12" class="px-4 blue-grey lighten-5" >
-      <customer-review></customer-review>
-    </v-col>
-    <v-col></v-col>
   </v-row>
 </template>
 <script>
@@ -59,9 +56,11 @@
   import ProductList from "../components/Product/ProductList";
   import CustomerReview from '../components/HomePage/CustomerReview'
   import VuetifyLogo from '~/components/VuetifyLogo.vue'
+  import BrandList from "../components/Product/BrandList";
 
   export default {
     components: {
+      BrandList,
       Logo,
       VuetifyLogo,
       ProductList,
