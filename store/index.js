@@ -1,5 +1,7 @@
 export const strict = false
 export const state = ()  => ({
+
+
   notify: {
     color: 'green',
     message: '',
@@ -10,7 +12,8 @@ export const state = ()  => ({
     message: 'Error',
     display: false
   },
-  cartDetails: []
+  cartDetails: [],
+  searchName: ''
 })
 
 
@@ -23,18 +26,25 @@ export const  getters = {
   },
   getCartDetails (state) {
     return state.cartDetails
+  },
+  getSearchName (state) {
+    return state.searchName
   }
+
 }
 
 export const mutations = {
-  setNotifyMessage (state, payload, color) {
+  setNotifyMessage (state, payload) {
     state.notify = {
       display: true,
-      color: color,
-      message: payload
+      color: payload.color,
+      message: payload.message
     }
   },
   setCartDetails (state, payload) {
     state.cartDetails = [...payload]
+  },
+  setSearchName (state, payload) {
+    state.searchName = payload
   }
 }

@@ -18,6 +18,7 @@
                 :flat="!hover"
                 class="mx-auto"
                 max-width="300"
+                @click="gotoProductPage(item._id)"
               >
                 <v-img
                   class="white--text align-end"
@@ -92,6 +93,9 @@
           .then((response) => {
             this.setCart(response)
           })
+      },
+      gotoProductPage (brandId) {
+        this.$router.push(`/product/${brandId}`)
       }
     }
 

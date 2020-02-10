@@ -112,7 +112,7 @@
         formData.append('productPrice', this.formValues.price)
         this.$axios.$post(`product`, formData)
         .then(() => {
-          this.setNotifyMessage('Successfully Created Product.')
+          this.setNotifyMessage({ message: 'Successfully Created Product.', color: 'green'})
           this.$emit('close')
         })
         .catch(() => {
@@ -120,9 +120,9 @@
         })
       },
       getBrand () {
-        this.$axios.$get('brand')
+        this.$axios.$get('brand/all')
         .then((response)=> {
-          this.brandChoices = response.result
+          this.brandChoices = response
         })
       }
     }
