@@ -61,7 +61,7 @@
         setCart: 'setCartDetails'
       }),
       getProducts ()  {
-        this.$axios.$get('brand/all')
+        this.$axios.$get('brand')
           .then((response)=> {
             this.brandList = response
           })
@@ -73,7 +73,7 @@
             user: this.$auth.user._id,
             status: 'Cart'
           }
-          this.$axios.$post('cart/addto', dataToPost)
+          this.$axios.$post('cart', dataToPost)
             .then(()=> {
               this.setNotifyMessage("Successfully added product.")
               this.setCartDetails()

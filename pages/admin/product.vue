@@ -21,7 +21,7 @@
           <tr>
             <td>{{ props.item.productName }}</td>
             <td>{{ props.item.productDescription }}</td>
-            <td>{{ props.item.brand || 'N/A' }}</td>
+            <td>{{ brandLists.length ? brandLists.find(x => x._id === props.item.brandId).brandName : '' }}</td>
             <td>{{ props.item.productStock }}</td>
             <td>{{ props.item.productStatus }}</td>
           </tr>
@@ -29,7 +29,7 @@
       </v-data-table>
     </v-card>
     <v-dialog v-model="productForm" width="960" persistent>
-      <product-form v-if="productForm" @close="productForm = false"></product-form>
+      <product-form v-if="productForm" @close="productForm = false, getAllProduct()"></product-form>
     </v-dialog>
   </v-container>
 </template>
@@ -46,6 +46,7 @@ export default {
         }
       ],
       brandChoices: [],
+      brandLists: [],
       headers: [
         { text: 'Name', value: 'productName', sortable: false },
         { text: 'Category', value: 'productName', sortable: false },
@@ -57,6 +58,7 @@ export default {
     },
   created() {
     this.getAllProduct()
+    this.getAllBrands()
   },
   methods: {
       getAllProduct() {
@@ -64,7 +66,13 @@ export default {
           .then((response) => {
             this.productList = response.result
           })
-      }
+      },
+    getAllBrands () {
+        this.$axios.$get('brand/all')
+      .then((response)=> {
+        this.brandLists = response
+      })
+    }
     }
 }
 </script>

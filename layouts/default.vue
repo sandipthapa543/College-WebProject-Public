@@ -6,9 +6,10 @@
       flat
       app
     >
-      <div>Ecresson</div>
+      <div @click="$router.push('/')">Automobile</div>
       <v-spacer></v-spacer>
       <v-text-field
+        :value="search"
         class="mt-8"
         label="Search"
         solo
@@ -16,6 +17,7 @@
         rounded
         light
         append-icon="mdi-search"
+        @change="search = $event"
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-btn v-if="!$auth.loggedIn"  text class="text-capitalize">Login</v-btn>
@@ -35,6 +37,10 @@
           </div>
         </template>
         <v-list dense>
+          <v-list-item @click="$router.push('my/profile')">
+            <v-list-item-icon><v-icon>mdi-lock</v-icon></v-list-item-icon>
+            <v-list-item-title>My Profile</v-list-item-title>
+          </v-list-item>
           <v-list-item @click="logout">
             <v-list-item-icon><v-icon>mdi-lock</v-icon></v-list-item-icon>
             <v-list-item-title>Logout</v-list-item-title>
@@ -51,7 +57,7 @@
             <v-badge
               color="green"
               class="mr-2"
-              :content="cartDetails.length"
+              :content="cartDetails.length || '0'"
             >
             <div
               class="mx-2"
@@ -91,7 +97,9 @@
                   cols="12"
                 >
                 <cart-item
-                  :product-id="product.product"
+                  :product-detail="product.product"
+                  :cart-id="product._id"
+                  :quantity="product.quantity"
                 ></cart-item>
                 </v-col>
               </v-row>
@@ -101,9 +109,9 @@
                 </v-col>
               </v-row>
               <v-row>
-                  <v-col class="text-right py-0">
-                    <v-btn text color="red darken-2" class="text-capitalize">Go To Cart</v-btn>
-                    <v-btn depressed color="orange" class="white--text text-capitalize">
+                  <v-col class="text-right py-0" v-if="cartDetails.length">
+                    <v-btn text color="red darken-2" class="text-capitalize" @click="$router.push('/my/cart')" >Go To Cart</v-btn>
+                    <v-btn depressed color="orange" @click="$router.push('/my/cart')" class="white--text text-capitalize">
                       Checkout
                     </v-btn>
                   </v-col>
@@ -118,7 +126,7 @@
       <vue-snackbar></vue-snackbar>
     </div>
     <v-footer class="grey darken-3">
-      <span>&copy; 2019 eCresson</span>
+      <span>&copy; 2020 Automobile</span>
     </v-footer>
   </v-app>
 </template>
@@ -134,6 +142,7 @@
         clipped: false,
         drawer: false,
         fixed: false,
+        search: '',
         items: [
           {
             icon: 'mdi-apps',
@@ -157,6 +166,12 @@
         cartDetails: 'getCartDetails'
       })
     },
+    watch: {
+      search () {
+        this.setSearchName(this.search)
+        this.$router.push('/product')
+      }
+    },
     created() {
       if(this.$auth.loggedIn) {
         this.fetchCart()
@@ -164,7 +179,8 @@
     },
     methods: {
       ...mapMutations({
-        setCartDetails: 'setCartDetails'
+        setCartDetails: 'setCartDetails',
+        setSearchName: 'setSearchName'
       }),
       logout () {
         this.$auth.logout();

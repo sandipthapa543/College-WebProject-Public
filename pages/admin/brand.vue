@@ -37,6 +37,9 @@
                 <v-col class="text-center" cols="12">
                   {{ brand.brandName }}
                 </v-col>
+                <v-col>
+                  <v-btn @click="brandDetail = brand, brandForm = true">Update</v-btn>
+                </v-col>
               </v-row>
             </v-card>
           </v-col>
@@ -44,7 +47,7 @@
       </v-card-text>
     </v-card>
     <v-dialog v-model="brandForm" width="960">
-      <brand-form v-if="brandForm" @close="getAllBrand(), brandForm = false"></brand-form>
+      <brand-form v-if="brandForm" :action-data="brandDetail" @close="getAllBrand(), brandForm = false, brandDetail= {}"></brand-form>
     </v-dialog>
   </v-container>
 </template>
@@ -55,6 +58,7 @@
     data () {
       return {
         brandForm: false,
+        brandDetail: {},
         brandList: [
           {
             name: 'Mirror', category: 'Something', brand: 'Ferrai', stock: 4, status: 'Published'
@@ -67,9 +71,9 @@
     },
     methods: {
       getAllBrand () {
-        this.$axios.$get(`/brand`)
+        this.$axios.$get(`/brand/all`)
         .then((result)=> {
-          this.brandList = result.result
+          this.brandList = result
         })
       }
     }
