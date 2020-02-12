@@ -7,10 +7,14 @@
         show-arrows-on-hover
       >
         <v-carousel-item
-          v-for=" i in 3"
+          v-for=" (photo,i) in photo"
           :key="i"
+          :src="photo"
+          justify="center"
         >
-          <v-img src="banner.jpg" aspect-ratio="1.7" contain  class=""></v-img>
+
+
+
         </v-carousel-item>
       </v-carousel>
 
@@ -41,7 +45,7 @@
                 <v-icon v-text="'mdi-account'" size="80"></v-icon>
               </v-col>
               <v-card-text>
-                <div class="body-2 font-weight-bold">Most Authentic Paper product.</div>
+                <div class="body-2 font-weight-bold">We sell Original parts.</div>
                 <div>We are good at this.</div>
               </v-card-text>
             </v-card>
@@ -94,8 +98,22 @@
             description: 'This is good paper product.'
           }
 
-        ]
+        ],
+
+
+          photo: [
+            {
+           src: 'image.jpg'},
+            {
+              src: 'banner.jpg'},
+            {src:
+                'bannerslider.png'},
+
+
+          ],
+
+        }
       }
-    }
+
   }
 </script>
