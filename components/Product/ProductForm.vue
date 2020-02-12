@@ -120,7 +120,7 @@
         })
       },
       getBrand () {
-        this.$axios.$get('brand/all')
+        this.$axios.$get('brand')
         .then((response)=> {
           this.brandChoices = response
         })
