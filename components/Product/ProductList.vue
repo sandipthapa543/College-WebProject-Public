@@ -18,6 +18,7 @@
                 :flat="!hover"
                 class="mx-auto"
                 max-width="300"
+                @click="gotoProductDetail (item.id)"
               >
                 <v-img
                   class="white--text align-end"
@@ -116,6 +117,10 @@
 
 
       },
+      gotoProductDetail (id) {
+        this.$router.push(`/product/${id}/detail`)
+      },
+
       setCartDetails () {
         this.$axios.$get(`cart?userId=${this.$auth.user._id}`)
         .then((response) => {
