@@ -8,14 +8,12 @@
         <v-col cols="3">
           <v-row>
             <v-col cols="12">
-              <v-text-field
-                label="Filter by Price"
-                type="number"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12">
               <v-select
+                v-model="selectedBrand"
+                :items="brandList"
                 label="Filter by Brand"
+                item-value="_id"
+                item-text="brandName"
               ></v-select>
             </v-col>
           </v-row>
@@ -85,6 +83,12 @@
                 </v-card>
               </v-hover>
             </v-col>
+            <v-col v-if="!productList.length " class="text-center">
+              <v-icon size="100" v-text="'mdi-cancel'"></v-icon>
+              <div class="font-weight-bold title">
+                No data Available
+              </div>
+            </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -92,26 +96,55 @@
   </v-card>
 </template>
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapMutations, mapGetters } from 'vuex'
   export default {
     props: ['title'],
     data () {
       return {
-        productList: []
+        productList: [],
+        selectedBrand: '',
+        brandList: []
+      }
+    },
+    computed: {
+      ...mapGetters({
+        searchName: 'getSearchName'
+      }),
+      queryParams () {
+        return {
+          brand: this.selectedBrand,
+          price: this.selectedPrice,
+          search: this.searchName
+        }
+      }
+    },
+    watch: {
+      queryParams () {
+        this.getProducts()
       }
     },
     created() {
-      this.getProducts()
+      this.selectedBrand = this.$route.params.brandId
+      this.getBrandDetail()
+      this.$nextTick(()=> {
+        this.getProducts()
+      })
     },
     methods: {
       ...mapMutations({
         setCart: 'setCartDetails'
       }),
       getProducts ()  {
-        this.$axios.$get('product')
+        this.$axios.$get(`product/`, {params: this.queryParams})
           .then((response)=> {
             this.productList = response.result
           })
+      },
+      getBrandDetail () {
+        this.$axios.$get(`brand`)
+        .then((response)=> {
+          this.brandList = response
+        })
       },
       addToCart (detail) {
         if(this.$auth.loggedIn) {
@@ -120,7 +153,7 @@
             user: this.$auth.user._id,
             status: 'Cart'
           }
-          this.$axios.$post('cart/addto', dataToPost)
+          this.$axios.$post('cart', dataToPost)
             .then(()=> {
               this.setNotifyMessage("Successfully added product.")
               this.setCartDetails()

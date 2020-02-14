@@ -44,12 +44,6 @@
                     placeholder="Quantity"
                   >
                   </v-text-field>
-                  <v-select
-                    :items="['Small', 'Medium', 'Large']"
-                    placeholder="Size"
-                    class="mt-0 pt-0"
-                  >
-                  </v-select>
                 </v-col>
                 <v-col cols="6" class="text-right">
                   <div class="mb-1">
@@ -62,12 +56,9 @@
 
               </v-row>
               <v-col>
-                <div>For customization & bulk order <span class="blue--text">click here</span>
-                </div>
                 <div>
                   <b>Shipping</b>
                   <div class="grey--text body-1">This ordered goods will be shipped by DHL, FedEx using express shipping method.</div>
-
                 </div>
                 <div>
                   <b>Share with your friends</b>
