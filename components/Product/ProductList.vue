@@ -18,7 +18,7 @@
                 :flat="!hover"
                 class="mx-auto"
                 max-width="300"
-                @click="gotoProductDetail (item.id)"
+                @click="gotoProductDetail (item._id)"
               >
                 <v-img
                   class="white--text align-end"

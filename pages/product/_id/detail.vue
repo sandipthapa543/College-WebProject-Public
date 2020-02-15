@@ -12,7 +12,7 @@
                     v-slot="{hover}"
                   >
                     <v-img
-                      :src="`http://localhost:9000/static/${productDetail.productImage}`"
+                      :src="'http://localhost:9000/static/' + `${productDetail.productImage}`"
                       contain
                       height="400"
                       @mouseenter="manageScale"
@@ -112,7 +112,7 @@
     },
     methods: {
       getProductDetails () {
-        this.$axios.$get(`product/${this.$route.params._id}`)
+        this.$axios.$get(`product/${this.$route.params.id}`)
         .then((response)=> {
           this.productDetail = response
         })
