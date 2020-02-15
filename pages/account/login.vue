@@ -22,9 +22,13 @@
               Login With Email
             </div>
             <div>
+              <v-form
+              v-model="valid"
+              ref="form">
               <v-text-field
                 v-model="username"
                 label="Username"
+                :rules="emailRules"
                 flat
                 prepend-inner-icon="mdi-account"
               ></v-text-field>
@@ -32,6 +36,7 @@
                 v-model="password"
                 type="password"
                 flat
+                :rules="passwordRules"
                 label="Password"
                 prepend-inner-icon="mdi-lock"
                 append-icon="mdi-eye"
@@ -49,6 +54,7 @@
                   ></v-checkbox>
                 </v-col>
               </v-row>
+              </v-form>
             </div>
           </v-col>
         </v-row>
@@ -59,25 +65,39 @@
 </template>
 <script>
   export default {
-    data () {
+    data() {
       return {
         username: '',
-        password: ''
+        password: '',
+        valid: true,
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        ],
+        passwordRules: [
+          v => !!v || 'Password is required',
+          v => v.length < 10 || 'Password must contain 10 characters',
+        ],
+
       }
     },
     methods: {
-      login () {
+      login() {
         const dataToPost = {
           email: this.username,
           password: this.password
         }
-        this.$auth.loginWith('local', {data: dataToPost} )
-        .then(()=> {
-          this.setNotifyMessage("Successfully Login. Enjoy Shopping.")
-        })
-        .catch((error)=> {
-          this.setNotifyMessage(error.response.data.message, 'red')
-        })
+
+
+        if (this.$refs.form.validate()) {
+          this.$auth.loginWith('local', {data: dataToPost})
+            .then(() => {
+              this.setNotifyMessage("Successfully Login. Enjoy Shopping.")
+            })
+            .catch((error) => {
+              this.setNotifyMessage(error.response.data.message, 'red')
+            })
+        }
       }
     }
   }

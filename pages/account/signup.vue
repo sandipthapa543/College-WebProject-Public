@@ -21,22 +21,29 @@
             <div>
               SignUp with us
             </div>
-            <div>
+            <v-form
+              v-model="valid"
+              ref="form"
+              :lazy-validation="lazy"
+            >
               <v-text-field
                 v-model="first_Name"
                 label="First Name"
+                :rules="nameRules"
                 flat
                 prepend-inner-icon="mdi-account-box"
               ></v-text-field>
               <v-text-field
                 v-model="last_Name"
                 label="Last Name"
+                :rules="nameRules"
                 flat
                 prepend-inner-icon="mdi-account"
               ></v-text-field>
 
               <v-text-field
                 v-model="email"
+                :rules="emailRules"
                 type="email"
                 label="Email"
                 flat
@@ -44,6 +51,7 @@
               ></v-text-field>
               <v-text-field
                 v-model="password"
+                :rules="passwordRules"
                 type="password"
                 flat
                 label="Password"
@@ -54,6 +62,7 @@
                 v-model="phone"
                 single-line
                 label="phone"
+                :rules="passwordRules"
                 flat
                 prepend-inner-icon="mdi-phone"
               ></v-text-field>
@@ -61,6 +70,7 @@
                 v-model="address"
                 label="Address"
                 flat
+                :rules="nameRules"
                 prepend-inner-icon="mdi-home"
               ></v-text-field>
               <v-row align="center">
@@ -73,7 +83,7 @@
 
 
               </v-row>
-            </div>
+            </v-form>
           </v-col>
         </v-row>
       </v-card>
@@ -89,7 +99,19 @@
         email:'',
         password: '',
         phone:'',
-        address:''
+        address:'',
+        valid: true,
+        nameRules: [
+            v => !!v ||  'This field is required.'
+        ],
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        ],
+        passwordRules:[
+          v=>!!v||'This field is required',
+          v=>v.length < 10 || ' this field required 10 character',
+        ],
       }
     },
     methods: {
@@ -102,13 +124,15 @@
           phone:this.phone,
           address:this.address
         }
-        this.$axios.$post('users/SignUp',  dataPost )
-          .then(()=> {
-            this.setNotifyMessage("Successfully Register. Enjoy Shopping.")
-          })
-          .catch((error)=> {
-            this.setNotifyMessage(error.response.data.message, 'red')
-          })
+        if (this.$refs.form.validate()) {
+          this.$axios.$post('users/SignUp',  dataPost )
+            .then(()=> {
+              this.setNotifyMessage("Successfully Register. Enjoy Shopping.")
+            })
+            .catch((error)=> {
+              this.setNotifyMessage(error.response.data.message, 'red')
+            })
+        }
       }
     }
   }
