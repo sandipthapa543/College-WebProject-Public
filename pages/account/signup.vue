@@ -12,9 +12,9 @@
           <v-col>
             <div>Our Brands</div>
             <v-row>
-              <v-col v-for="index in 4" :key="index">
-                Ferrari
-              </v-col>
+              <v-img src="/car.png" height="300"  width="50">
+              </v-img>
+
             </v-row>
           </v-col>
           <v-col>

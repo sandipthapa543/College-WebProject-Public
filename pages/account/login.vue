@@ -12,9 +12,8 @@
           <v-col>
             <div>Our Brands</div>
             <v-row>
-              <v-col v-for="index in 4" :key="index">
-                Ferrari
-              </v-col>
+              <v-img src="/car.png" height="300"  width="100">
+              </v-img>
             </v-row>
           </v-col>
           <v-col>
@@ -78,6 +77,17 @@
           v => !!v || 'Password is required',
           v => v.length < 10 || 'Password must contain 10 characters',
         ],
+        photo: [
+          {
+            src: 'image.jpg'},
+          {
+            src: 'banner.jpg'},
+          {src:
+              'bannerslider.png'},
+
+
+        ],
+
 
       }
     },
