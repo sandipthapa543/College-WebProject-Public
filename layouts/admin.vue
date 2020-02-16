@@ -20,9 +20,8 @@
         @change="search = $event"
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn v-if="!$auth.loggedIn" @click="$router.push('/account/login') "  text class="text-capitalize">Login</v-btn>
-      <v-btn v-if="$auth.user && $auth.user.role === 'admin'" @click="$router.push('/admin/orders') "  text class="text-capitalize">Admin</v-btn>
-      <v-btn v-if="!$auth.loggedIn" @click="$router.push('/account/signup') " text class="text-capitalize">Sign Up</v-btn>
+      <v-btn  @click="$router.push('/admin/brand') "  text class="text-capitalize">Brand</v-btn>
+      <v-btn  @click="$router.push('/admin/product') "  text class="text-capitalize">Product</v-btn>
       <v-menu
         v-if="$auth.loggedIn"
         bottom
@@ -55,11 +54,11 @@
         <template
           v-slot:activator="{on}"
         >
-            <v-badge
-              color="green"
-              class="mr-2"
-              :content="cartDetails.length || '0'"
-            >
+          <v-badge
+            color="green"
+            class="mr-2"
+            :content="cartDetails.length || '0'"
+          >
             <div
               class="mx-2"
               v-on="on"
@@ -69,56 +68,56 @@
               ></v-icon>
               Cart
             </div>
-            </v-badge>
+          </v-badge>
         </template>
-          <v-card width="500">
-            <v-card-title>
-              Your Whishlist
-            </v-card-title>
-            <v-card-text style="height: 385px">
-              <v-row v-if="cartDetails && cartDetails.length">
-                <v-col  class="py-0">
-                  <v-row align="center" justify="center">
-                    <v-col cols="6">
-                      Product Name
-                    </v-col>
-                    <v-col>
-                      Quantity
-                    </v-col>
-                    <v-col>
-                      Price
-                    </v-col>
-                    <v-col>
-                      Actions
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <v-col
-                  v-for="(product, index) in cartDetails.slice(0, 2)" :key="index"
-                  cols="12"
-                >
+        <v-card width="500">
+          <v-card-title>
+            Your Whishlist
+          </v-card-title>
+          <v-card-text style="height: 385px">
+            <v-row v-if="cartDetails && cartDetails.length">
+              <v-col  class="py-0">
+                <v-row align="center" justify="center">
+                  <v-col cols="6">
+                    Product Name
+                  </v-col>
+                  <v-col>
+                    Quantity
+                  </v-col>
+                  <v-col>
+                    Price
+                  </v-col>
+                  <v-col>
+                    Actions
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col
+                v-for="(product, index) in cartDetails.slice(0, 2)" :key="index"
+                cols="12"
+              >
                 <cart-item
                   :product-detail="product.product"
                   :cart-id="product._id"
                   :quantity="product.quantity"
                 ></cart-item>
-                </v-col>
-              </v-row>
-              <v-row v-else>
-                <v-col class="text-center">
-                  No any Product added.
-                </v-col>
-              </v-row>
-              <v-row>
-                  <v-col class="text-right py-0" v-if="cartDetails.length">
-                    <v-btn text color="red darken-2" class="text-capitalize" @click="$router.push('/my/cart')" >Go To Cart</v-btn>
-                    <v-btn depressed color="orange" @click="$router.push('/my/cart')" class="white--text text-capitalize">
-                      Checkout
-                    </v-btn>
-                  </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+              </v-col>
+            </v-row>
+            <v-row v-else>
+              <v-col class="text-center">
+                No any Product added.
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="text-right py-0" v-if="cartDetails.length">
+                <v-btn text color="red darken-2" class="text-capitalize" @click="$router.push('/my/cart')" >Go To Cart</v-btn>
+                <v-btn depressed color="orange" @click="$router.push('/my/cart')" class="white--text text-capitalize">
+                  Checkout
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
 
       </v-menu>
     </v-app-bar>
@@ -191,10 +190,10 @@
         this.$axios.$get(`cart?userId=${this.$auth.user._id}`)
           .then((response) => {
             let cartDetails = [ ...new Set(response.map((x) =>{
-            return {
-              product: x.product,
-              cart: x.cart
-            }
+              return {
+                product: x.product,
+                cart: x.cart
+              }
             } ))]
             this.setCartDetails(cartDetails || [])
           })

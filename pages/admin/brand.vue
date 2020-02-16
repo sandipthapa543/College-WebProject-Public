@@ -5,7 +5,7 @@
         <v-icon v-text="'mdi-file'"></v-icon>
         <div>Brand List</div>
         <v-spacer></v-spacer>
-        <v-btn color="red darken-3" class="white--text" depressed @click="brandForm = true">
+        <v-btn color="info" class="white--text" depressed @click="brandForm = true">
           Create New
         </v-btn>
       </v-card-title>
@@ -37,8 +37,8 @@
                 <v-col class="text-center" cols="12">
                   {{ brand.brandName }}
                 </v-col>
-                <v-col>
-                  <v-btn @click="brandDetail = brand, brandForm = true">Update</v-btn>
+                <v-col class="text-center">
+                  <v-btn depressed color="info" class="white--text" @click="brandDetail = brand, brandForm = true">Update</v-btn>
                 </v-col>
               </v-row>
             </v-card>
@@ -55,6 +55,7 @@
   import BrandForm from "../../components/BrandProduct/BrandForm";
   export default {
     components: {BrandForm},
+    layout: 'admin',
     data () {
       return {
         brandForm: false,

@@ -82,7 +82,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="grey" text>
+      <v-btn color="grey" @click="$emit('close')" text>
         Cancel
       </v-btn>
       <v-btn

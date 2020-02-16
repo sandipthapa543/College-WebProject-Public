@@ -102,10 +102,10 @@
         if (this.$refs.form.validate()) {
           this.$auth.loginWith('local', {data: dataToPost})
             .then(() => {
-              this.setNotifyMessage("Successfully Login. Enjoy Shopping.")
+              this.setNotifyMessage({ message: "Successfully Login. Enjoy Shopping.", color: "green"})
             })
             .catch((error) => {
-              this.setNotifyMessage(error.response.data.message, 'red')
+              this.setNotifyMessage({ message: error.response.data.message, color: 'red'})
             })
         }
       }
