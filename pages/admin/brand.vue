@@ -11,7 +11,7 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-row>
+        <v-row v-if="brandList.length">
           <v-col
             v-for="(brand, index) in brandList"
             :key="index"
@@ -71,7 +71,7 @@
     },
     methods: {
       getAllBrand () {
-        this.$axios.$get(`/brand/all`)
+        this.$axios.$get(`/brand`)
         .then((result)=> {
           this.brandList = result
         })

@@ -20,11 +20,11 @@
                  width="100"
                  contain
           ></v-img>
-<!--          <v-file-input-->
-<!--            v-model="formValues.brandImage"-->
-<!--            label="Brand Image"-->
-<!--            prepend-inner-icon="mdi-file"-->
-<!--          ></v-file-input>-->
+          <v-file-input
+            v-model="formValues.brandImage"
+            label="Brand Image"
+            prepend-inner-icon="mdi-file"
+          ></v-file-input>
         </v-col>
       </v-row>
     </v-card-text>
