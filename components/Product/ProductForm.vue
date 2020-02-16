@@ -4,9 +4,14 @@
       Create Product
     </v-card-title>
     <v-card-text>
-      <v-row>
+      <v-form
+        v-model="valid"
+        ref="form">
+        <v-row>
+
         <v-col cols="6">
           <v-text-field
+            :rules="nameRules"
             v-model="formValues.productName"
             label="Product Name"
             prepend-inner-icon="mdi-file"
@@ -14,6 +19,7 @@
         </v-col>
         <v-col cols="6">
           <v-text-field
+            :rules="nameRules"
             v-model="formValues.productCategory"
             label="Product Category"
             prepend-inner-icon="mdi-file"
@@ -23,6 +29,7 @@
           <v-select
             v-model="formValues.brand"
             label="Brand"
+            :rules="nameRules"
             :items="brandChoices"
             item-text="brandName"
             item-value="_id"
@@ -33,11 +40,13 @@
           <v-text-field
             v-model="formValues.stock"
             label="Stock"
+            :rules="nameRules"
             prepend-inner-icon="mdi-file"
           ></v-text-field>
         </v-col>
         <v-col cols="6">
           <v-select
+            :rules="nameRules"
             v-model="formValues.status"
             label="Status"
             :items="statusChoices"
@@ -48,6 +57,7 @@
           <v-text-field
             v-model="formValues.price"
             label="price"
+            :rules="nameRules"
             prepend-inner-icon="mdi-cash"
           ></v-text-field>
         </v-col>
@@ -55,6 +65,7 @@
           <v-textarea
             v-model="formValues.description"
             label="Description"
+            :rules="nameRules"
             prepend-inner-icon="mdi-file"
           ></v-textarea>
         </v-col>
@@ -62,10 +73,12 @@
           <v-file-input
             v-model="formValues.image"
             label="Product Image"
+            :rules="nameRules"
             prepend-inner-icon="mdi-file"
           ></v-file-input>
         </v-col>
       </v-row>
+      </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -89,6 +102,10 @@
     data () {
       return {
         brand: {},
+        valid: true,
+        nameRules: [
+          v => !!v ||  'This field is required.'
+        ],
         statusChoices: ['Published', 'Unpublished'],
         brandChoices: [],
         formValues: {
