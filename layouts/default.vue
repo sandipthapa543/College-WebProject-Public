@@ -21,7 +21,7 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-btn v-if="!$auth.loggedIn" @click="$router.push('/account/login') "  text class="text-capitalize">Login</v-btn>
-      <v-btn v-if="$auth.user && $auth.user.role === 'admin'" @click="$router.push('/admin/orders') "  text class="text-capitalize">Admin</v-btn>
+      <v-btn v-if="$auth.user && $auth.user.role === 'admin'" @click="$router.push('/admin/') "  text class="text-capitalize">Admin</v-btn>
       <v-btn v-if="!$auth.loggedIn" @click="$router.push('/account/signup') " text class="text-capitalize">Sign Up</v-btn>
       <v-menu
         v-if="$auth.loggedIn"
